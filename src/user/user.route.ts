@@ -6,7 +6,7 @@ const router = express.Router();
 router.post('/', async (req: Request, res: Response) => {
   try {
     const { name, email, universityId, subjects } = req.body;
-    const university = await db.models.University.findByPk(universityId); 
+    const university = await db.models.University.findByPk(universityId);
 
     if (!university) {
       res.status(404).json({ error: 'University not found' });
@@ -16,7 +16,7 @@ router.post('/', async (req: Request, res: Response) => {
     if (await db.models.User.findOne({ where: { email } })) {
       throw new Error("User already exists.")
     }
-    
+
     const user = await db.models.User.create({ name, email, universityId });
 
     if (subjects && Array.isArray(subjects)) {
@@ -45,6 +45,24 @@ router.get('/', async (_req: Request, res: Response) => {
       ],
     });
     res.status(200).json(users);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.put('/subjects', async (req: Request, res: Response) => {
+  try {
+    const { userId, subjects } = req.body;
+    const user = await db.models.User.findByPk(userId);
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+    const validSubjects = await db.models.Subject.findAll({
+      where: { id: subjects },
+    });
+    await user.setSubjects(validSubjects);
+    res.status(200).json(user);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
