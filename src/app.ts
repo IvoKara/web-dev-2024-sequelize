@@ -1,15 +1,17 @@
 import express from 'express';
 import userRouter from './user/user.route';
 import universityRouter from './university/university.route';
+import subjectRouter from './subject/subject.route';
 import { db } from './database';
 
 const app = express();
-const PORT = 3000;
+const PORT = 3100;
 
 app.use(express.json());
 
 app.use('/user', userRouter);
 app.use('/university', universityRouter);
+app.use('/subject', subjectRouter);
 
 
 app.listen(PORT, async () => {
