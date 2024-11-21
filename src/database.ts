@@ -27,3 +27,15 @@ db.models.University.hasMany(db.models.User, {
     foreignKey: 'universityId',
     as: 'users',
 });
+
+db.models.User.belongsToMany(db.models.Subject, {
+    through: 'user_subjects',
+    foreignKey: 'userId',
+    as: 'subjects',
+});
+
+db.models.Subject.belongsToMany(db.models.User, {
+    through: 'user_subjects',
+    foreignKey: 'subjectId',
+    as: 'users',
+});
