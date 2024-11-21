@@ -30,10 +30,11 @@ async function testPostUniversityRequest() {
 
 async function testPostUserRequest() {
   try {
-    const response = await axios.post('http://localhost:3000/user', {
+    const response = await axios.post('http://localhost:3100/user', {
       name: 'John Doe',
       email: 'johndoe@example.com',
-      universityId: 1
+      universityId: 1,
+      subjects: [1, 2]
     });
     console.log('Response data:', response.data);
   } catch (error) {
